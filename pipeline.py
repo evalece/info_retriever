@@ -2,7 +2,8 @@
 import yaml # load retriever configs
 import rank_bm25 # use rank_bm25 for BM25 variants
 
-config = yaml.safe_load(open('config/config.yaml'))
+# config loading 
+bm25_config = yaml.safe_load(open('config/bm25_config.yaml'))
 
 def bm25_init(config_input):
     retrievers_out=[]
@@ -13,7 +14,7 @@ def bm25_init(config_input):
 
 
 def bm25_runner(function_name): # calls respective iterface in the bm 25 lib 
-    pass
+    
     
     
 retrievers=[] # list of retriver classes built on config
