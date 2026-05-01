@@ -1,4 +1,7 @@
+
 from datasets import load_dataset
+import logging 
+
 
 
 
@@ -19,5 +22,9 @@ class BEIR:
 
     def load_qrels(self):
         return load_dataset(self.dataset_name+"-qrels", split=self.split) # train, validation, test 
+    
+
+    def debug():
+
     
   
