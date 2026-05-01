@@ -1,0 +1,41 @@
+
+
+
+retriever:
+  BM25:
+    corpus:
+    corpus_size : 0
+    avgdl: 0
+    doc_freqs: []
+    idf: {}
+    doc_len: []
+    tokenizer: None
+
+  BM25Okapi:
+    corpus:
+    tokenizer:
+    k1: 1.5
+    b: 0.75
+    epsilon: 0.25
+  
+  BM25L:
+    corpus:
+    tokenizer:
+    k1: 1.5
+    b: 0.75
+    delta: 0.5
+  
+  BM25Plus:
+    corpus:
+    tokenizer:
+    k1: 1.5
+    b: 0.75
+    delta: 1.0
+
+  
+
+
+  
+  
+
+
