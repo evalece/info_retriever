@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 # logging.basicConfig(level=logging.INFO) # logger filtering control; aside: DEBUG < INFO < WARNING < ERROR < CRITICAL, 
 
 logging.basicConfig(
-    level=logging.ERROR,
+    level=logging.WARNING, # aside: DEBUG < INFO < WARNING < ERROR < CRITICAL, 
     format="%(levelname)s%(name)s:\n%(message)s\n"
     )
 
@@ -18,14 +18,22 @@ class BEIR:
         self.from_= from_
         self.to_ = to_  
         self.dataset_name = 'BeIR/'+ dataset_name #i.e., dataset_name= scidocs
+        self.corpus_dict={}
         self.corpus = self.load_corpus() # d; need to load full documents for information retrieval 
         self.queries = self.load_queries() # q; can load partial  
         self.qrels = self.load_qrels() # loading of T for identifying relevance 
+        
 
     
     def load_corpus(self):
-        d = load_dataset(self.dataset_name, "corpus")
+        d = load_dataset(self.dataset_name, "corpus") # HF returns datadict, need parse by passing 'corpus' key
+
+        for i in d["corpus"]:
+            self.corpus_dict[(i["title"] or " ")+" "+i["text"]] = i["_id"]
+        
         logger.info("load_corpus: %s", d["corpus"][:3])
+        key = next(iter(self.corpus_dict))
+        logger.info("sample of id in corps:\n%s", {key: self.corpus_dict[key]})
         return d["corpus"]
 
     def load_queries(self):
@@ -43,4 +51,4 @@ class BEIR:
         return d
 
     
-b= BEIR(dataset_name='scidocs') # example usage 
+#b= BEIR(dataset_name='scidocs') # example usage 

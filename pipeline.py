@@ -6,31 +6,39 @@ path_setup.ensure_project_root_on_path()
 import yaml  # load retriever configs
 from rank_bm25 import BM25Okapi # use rank_bm25 for BM25 variants from venv/lib/python3.8/site-packages/rank_bm25.py 
 
-from config.BEIR import BEIR #corpus, queries and qrels 
+from config.BEIR import BEIR #corpus, queries and qrels in shape corpus = [d₁, d₂, d₃, ..., dₙ]
 
 def tokenizer(text):
-    return text.lower().split()  # split on each doc where corpus is containing d=1 to n, each split by tokenizer
+    return text.split()  # split on each doc where corpus is containing d=1 to n, each split by tokenizer
     # corpus = 
     # [
-    # ["this", is", "doc1"],
-    # ["another", "document"],
-    # ["more", "text", "here"]
+    # ["This", is", "doc1"...],
+    # ["Another", "document"...],
+    # ["More", "text", "here"...]
     # ]
 
 
 beir = BEIR(dataset_name="scidocs", from_=0, to_=1)
 print(type(beir.corpus))
 
-documents = [doc["text"] for doc in beir.corpus]
+## Corpus 
+documents = [ doc["title"]+" "+ doc["text"] for doc in beir.corpus]
 tokenized_corpus = [tokenizer(doc) for doc in documents]
-
-bm25Okapi= BM25Okapi(tokenized_corpus)
-
+## Query 
 query_text = beir.queries[0]["text"]
 tokenized_query = tokenizer(query_text)
+# Retrieval 
+bm25Okapi= BM25Okapi(tokenized_corpus)
 
-out = bm25Okapi.get_top_n(tokenized_query, documents, n=3)
+
+out = bm25Okapi.get_top_n(tokenized_query, documents, n=3) #retruns a list of top n docs
+top_n_corpus_id=[]
+for o in out:
+    oo=beir.corpus_dict.get(o)
+    top_n_corpus_id.append(oo)
+
 print(out)
+print(top_n_corpus_id)
 
 
 # config loading 
