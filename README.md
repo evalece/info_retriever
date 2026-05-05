@@ -1,5 +1,15 @@
 This project is WIP
 
+Data transformation notes 
+
+# split on each doc where corpus is containing d=1 to n, each split by tokenizer
+    # corpus = 
+    # [
+    # ["this", is", "doc1"],
+    # ["another", "document"],
+    # ["more", "text", "here"]
+    # ]
+
 - Reference 
 
 Corpus reference [BeIR/scidocs] : https://huggingface.co/datasets/BeIR/scidocs/viewer/corpus/corpus ; https://huggingface.co/datasets/BeIR/scidocs/blob/main/README.md 

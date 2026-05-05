@@ -9,7 +9,14 @@ from rank_bm25 import BM25Okapi # use rank_bm25 for BM25 variants from venv/lib/
 from config.BEIR import BEIR #corpus, queries and qrels 
 
 def tokenizer(text):
-    return text.lower().split()
+    return text.lower().split()  # split on each doc where corpus is containing d=1 to n, each split by tokenizer
+    # corpus = 
+    # [
+    # ["this", is", "doc1"],
+    # ["another", "document"],
+    # ["more", "text", "here"]
+    # ]
+
 
 beir = BEIR(dataset_name="scidocs", from_=0, to_=1)
 print(type(beir.corpus))
@@ -17,12 +24,12 @@ print(type(beir.corpus))
 documents = [doc["text"] for doc in beir.corpus]
 tokenized_corpus = [tokenizer(doc) for doc in documents]
 
-bm25 = BM25Okapi(tokenized_corpus)
+bm25Okapi= BM25Okapi(tokenized_corpus)
 
 query_text = beir.queries[0]["text"]
 tokenized_query = tokenizer(query_text)
 
-out = bm25.get_top_n(tokenized_query, documents, n=3)
+out = bm25Okapi.get_top_n(tokenized_query, documents, n=3)
 print(out)
 
 
