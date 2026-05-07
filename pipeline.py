@@ -1,5 +1,6 @@
 # Pipeline orchestrates and collects data and performance metrics from the retrievers. This is the point of access for the project.
 import path_setup
+import math
 
 path_setup.ensure_project_root_on_path()
 
@@ -25,20 +26,33 @@ print(type(beir.corpus))
 documents = [ doc["title"]+" "+ doc["text"] for doc in beir.corpus]
 tokenized_corpus = [tokenizer(doc) for doc in documents]
 ## Query 
-query_text = beir.queries[0]["text"]
-tokenized_query = tokenizer(query_text)
+query_size=len(beir.queries["text"])
+print("query_size", query_size)
+
+query_text = beir.queries["text"]
+tokenized_query = []
+for q in query_text:
+    tokenized_query.append(tokenizer(q))
 # Retrieval 
 bm25Okapi= BM25Okapi(tokenized_corpus)
 
+for q in query_text: #need to take tokenizer to loop throught multiple queries instead of the following 
+    out = bm25Okapi.get_top_n(tokenized_query, documents, n=3) #retruns a list of top n docs
+    top_n_corpus_id=[]
+    for o in out:
+        oo=beir.corpus_dict.get(o)
+        top_n_corpus_id.append(oo)
 
-out = bm25Okapi.get_top_n(tokenized_query, documents, n=3) #retruns a list of top n docs
-top_n_corpus_id=[]
-for o in out:
-    oo=beir.corpus_dict.get(o)
-    top_n_corpus_id.append(oo)
+    print(out)
+    print("ids")
+    print(top_n_corpus_id) # uses query and a unoptimized k for top k to get top n
+    top_n_scores= bm25Okapi.get_top_n_score(tokenized_query, documents, n=3)
+    print(top_n_scores)
+    # BM25 scores & top k optimization/ adapations:
+    # from top k, retrieve scores for each top k, 
+    # then use query dict to find ids for query 
+    
 
-print(out)
-print(top_n_corpus_id)
 
 
 # config loading 
