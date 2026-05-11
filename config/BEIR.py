@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 # logging.basicConfig(level=logging.INFO) # logger filtering control; aside: DEBUG < INFO < WARNING < ERROR < CRITICAL, 
 
 logging.basicConfig(
-    level=logging.INFO, # aside: DEBUG < INFO < WARNING < ERROR < CRITICAL, 
+    level=logging.WARNING, # aside: DEBUG < INFO < WARNING < ERROR < CRITICAL, 
     format="%(levelname)s%(name)s:\n%(message)s\n"
     )
 
